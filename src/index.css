@@ -1,0 +1,501 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 3.1%;
+    --foreground: 30 14% 93%;
+    --card: 0 0% 6.7%;
+    --card-foreground: 30 14% 93%;
+    --popover: 0 0% 6.7%;
+    --popover-foreground: 30 14% 93%;
+    --primary: 42 47% 54%;
+    --primary-foreground: 0 0% 3.1%;
+    --secondary: 0 0% 6.7%;
+    --secondary-foreground: 30 14% 93%;
+    --muted: 0 0% 6.7%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 42 47% 54%;
+    --accent-foreground: 0 0% 3.1%;
+    --destructive: 4 56% 46%;
+    --destructive-foreground: 30 14% 93%;
+    --border: 42 47% 54% / 0.15;
+    --input: 0 0% 15%;
+    --ring: 42 47% 54%;
+    --radius: 0px;
+
+    --gold: 42 47% 54%;
+    --silver: 212 12% 70%;
+    --surface: 0 0% 6.7%;
+    --charcoal: 0 0% 10%;
+
+    --sidebar-background: 0 0% 3.1%;
+    --sidebar-foreground: 30 14% 93%;
+    --sidebar-primary: 42 47% 54%;
+    --sidebar-primary-foreground: 0 0% 3.1%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 30 14% 93%;
+    --sidebar-border: 42 47% 54% / 0.15;
+    --sidebar-ring: 42 47% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Mono', monospace;
+    cursor: crosshair;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .font-mono-ui {
+    font-family: 'DM Mono', monospace;
+  }
+  .font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+  .text-gold {
+    color: hsl(var(--gold));
+  }
+  .text-silver {
+    color: hsl(var(--silver));
+  }
+  .bg-gold {
+    background-color: hsl(var(--gold));
+  }
+  .border-gold {
+    border-color: hsl(var(--gold));
+  }
+  .bg-surface {
+    background-color: hsl(var(--surface));
+  }
+  .bg-charcoal {
+    background-color: hsl(var(--charcoal));
+  }
+}
+
+/* Carbon fiber noise overlay */
+.carbon-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(0 0% 3.1%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(42 47% 54% / 0.3);
+}
+
+/* Ticker animation */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+/* Stagger fade in */
+@keyframes hero-fade-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.hero-fade-up {
+  opacity: 0;
+  animation: hero-fade-up 0.8s ease-out forwards;
+}
+
+/* Scroll fade in */
+@keyframes scroll-fade-in {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Video panel desaturation */
+.video-panel-rest {
+  filter: saturate(0.3) brightness(0.55);
+  transition: filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.video-panel-active {
+  filter: saturate(1) brightness(1);
+}
+
+/* Gold glow separator */
+.gold-separator {
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    hsl(42 47% 54% / 0.3) 20%,
+    hsl(42 47% 54% / 0.6) 50%,
+    hsl(42 47% 54% / 0.3) 80%,
+    transparent
+  );
+  z-index: 10;
+}
+.gold-separator-glow {
+  box-shadow: 0 0 8px hsl(42 47% 54% / 0.2);
+}
+
+/* Vignette overlay */
+.vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 3.1% / 0.7) 100%);
+}
+.bottom-fade {
+  background: linear-gradient(to top, hsl(0 0% 3.1%) 0%, transparent 100%);
+}
+
+/* BEM Components: Velocity App */
+.velocity-app {
+  @apply bg-background min-h-screen flex flex-col;
+}
+
+/* BEM Components: Velocity Hero */
+.velocity-hero {
+  @apply relative h-[100dvh] w-full overflow-hidden bg-background;
+}
+.velocity-hero__bg {
+  @apply absolute inset-0 bg-background;
+}
+.velocity-hero__panels {
+  @apply absolute inset-0 flex;
+}
+.velocity-hero__panel {
+  @apply relative overflow-hidden cursor-pointer;
+  transition: flex 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.velocity-hero__video {
+  @apply absolute inset-0 w-full h-full object-cover;
+}
+.velocity-hero__label {
+  @apply absolute bottom-0 left-0 right-0 p-2 sm:p-4 transition-opacity duration-500 z-20;
+}
+.velocity-hero__name {
+  @apply text-gold font-display text-sm sm:text-lg tracking-wider;
+}
+.velocity-hero__marque {
+  @apply text-silver font-mono-ui text-[8px] sm:text-[9px] tracking-[0.2em] uppercase;
+}
+.velocity-hero__badge {
+  @apply absolute top-4 right-4 font-mono-ui text-[9px] sm:text-[10px] text-gold tracking-widest transition-opacity duration-500 z-20 hidden sm:block;
+}
+.velocity-hero__cta-container {
+  @apply absolute inset-0 flex items-center justify-center z-20;
+}
+.velocity-hero__cta {
+  @apply border border-gold text-gold font-mono-ui text-[10px] sm:text-xs tracking-[0.3em] uppercase px-4 py-2 sm:px-8 sm:py-3 hover:bg-gold hover:text-background transition-all duration-300;
+}
+.velocity-hero__vignette {
+  @apply absolute inset-0 vignette pointer-events-none z-10;
+}
+.velocity-hero__bottom-fade {
+  @apply absolute bottom-0 left-0 right-0 h-32 sm:h-48 bottom-fade pointer-events-none z-10;
+}
+.velocity-hero__content {
+  @apply absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none px-4;
+}
+.velocity-hero__subtitle {
+  @apply hero-fade-up font-mono-ui text-[8px] sm:text-[9px] tracking-[0.3em] sm:tracking-[0.5em] uppercase text-gold mb-4 sm:mb-6 text-center;
+}
+.velocity-hero__title {
+  @apply hero-fade-up font-display text-center leading-[0.9] max-w-full overflow-hidden;
+}
+.velocity-hero__title-primary {
+  @apply block text-foreground text-5xl sm:text-7xl md:text-8xl lg:text-[148px] font-light;
+}
+.velocity-hero__title-secondary {
+  @apply block text-gold text-5xl sm:text-7xl md:text-8xl lg:text-[148px] font-light italic;
+}
+.velocity-hero__description {
+  @apply hero-fade-up font-mono-ui text-silver text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] mt-4 sm:mt-6 text-center max-w-[90%];
+}
+.velocity-hero__action {
+  @apply hero-fade-up pointer-events-auto border border-gold text-gold font-mono-ui text-[9px] sm:text-[10px] tracking-[0.4em] uppercase px-8 py-3 sm:px-10 sm:py-4 mt-8 sm:mt-10 hover:bg-gold hover:text-background transition-all duration-500;
+}
+.velocity-hero__ticker {
+  @apply absolute bottom-0 left-0 right-0 z-30 overflow-hidden py-2 sm:py-3 border-t border-gold/10;
+}
+.velocity-hero__ticker-content {
+  @apply animate-ticker whitespace-nowrap font-mono-ui text-[9px] sm:text-[10px] tracking-[0.4em] text-gold/40 uppercase;
+}
+
+/* BEM Components: Featured Collection */
+.featured-collection {
+  @apply relative bg-surface carbon-texture py-20 sm:py-32 overflow-hidden;
+}
+.featured-collection__content {
+  @apply relative z-10;
+}
+.featured-collection__header {
+  @apply max-w-7xl mx-auto px-6 lg:px-16 mb-12 sm:mb-16;
+}
+.featured-collection__divider {
+  @apply w-12 h-px bg-gold mb-6 sm:mb-8;
+}
+.featured-collection__title-container {
+  @apply flex flex-col sm:flex-row sm:items-end justify-between gap-4;
+}
+.featured-collection__title {
+  @apply font-display text-4xl sm:text-5xl text-foreground;
+}
+.featured-collection__title-highlight {
+  @apply italic text-gold;
+}
+.featured-collection__scroll-hint {
+  @apply hidden sm:block font-mono-ui text-[10px] tracking-[0.3em] uppercase text-muted-foreground;
+}
+.featured-collection__track-container {
+  @apply relative w-full;
+}
+.featured-collection__marquee {
+  @apply flex gap-4 sm:gap-6 w-max;
+  animation: marquee-scroll 40s linear infinite;
+}
+.featured-collection__marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 8px)); } /* adjusts dynamically based on gap */
+}
+@media (min-width: 640px) {
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 12px)); }
+  }
+}
+
+.featured-collection__item {
+  @apply relative flex-shrink-0 w-[85vw] sm:w-[400px] overflow-hidden cursor-pointer border border-gold/10;
+}
+.featured-collection__image-container {
+  @apply aspect-[4/3] w-full;
+}
+.featured-collection__image {
+  @apply w-full h-full object-cover transition-transform ease-out;
+  transition-duration: 1.5s;
+}
+.featured-collection__item:hover .featured-collection__image {
+  transform: scale(1.1);
+}
+
+.featured-collection__item-details {
+  @apply absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent p-4 sm:p-6 flex flex-col justify-end;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+/* Touch devices typically trigger hover on tap, but we can also default to opacity 1 if hover isn't supported */
+@media (hover: none) {
+  .featured-collection__item-details {
+    opacity: 1;
+    background: linear-gradient(to top, hsl(0 0% 3.1% / 0.9), transparent);
+  }
+  .featured-collection__item-title,
+  .featured-collection__item-meta,
+  .featured-collection__cta {
+    transform: translateY(0) !important;
+  }
+}
+.featured-collection__item:hover .featured-collection__item-details {
+  opacity: 1;
+}
+
+.featured-collection__item-title {
+  @apply font-display text-xl sm:text-2xl text-foreground mb-1 sm:mb-2;
+  transform: translateY(20px);
+  transition: transform 0.5s ease;
+  transition-delay: 0.05s;
+}
+.featured-collection__item-meta {
+  @apply font-mono-ui text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-gold mb-3 sm:mb-4;
+  transform: translateY(20px);
+  transition: transform 0.5s ease;
+  transition-delay: 0.1s;
+}
+.featured-collection__cta {
+  @apply font-mono-ui text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-background bg-gold px-4 py-2 sm:px-6 sm:py-3 hover:bg-gold/90 transition-colors w-fit mt-1 sm:mt-2;
+  transform: translateY(20px);
+  transition: transform 0.5s ease, background-color 0.3s ease;
+  transition-delay: 0.15s;
+}
+
+.featured-collection__item:hover .featured-collection__item-title,
+.featured-collection__item:hover .featured-collection__item-meta,
+.featured-collection__item:hover .featured-collection__cta {
+  transform: translateY(0);
+}
+
+/* BEM Components: Featured Collection Modal */
+.car-modal {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 lg:p-12;
+}
+.car-modal__backdrop {
+  @apply absolute inset-0 bg-background/90 backdrop-blur-md;
+  animation: modal-fade-in 0.4s ease-out;
+}
+.car-modal__content-wrapper {
+  @apply relative w-full max-w-6xl max-h-[90vh] lg:h-[85vh] overflow-y-auto lg:overflow-hidden bg-surface border border-gold/20 shadow-2xl;
+  animation: modal-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.car-modal__close {
+  @apply absolute top-2 right-2 sm:top-4 sm:right-4 z-20 text-muted-foreground hover:text-gold transition-colors bg-background/50 backdrop-blur-sm p-2 rounded-full;
+}
+.car-modal__layout {
+  @apply flex flex-col lg:grid lg:grid-cols-2 gap-0 h-full;
+}
+.car-modal__gallery {
+  @apply flex flex-col h-full overflow-hidden lg:h-full;
+}
+.car-modal__image-primary {
+  @apply w-full aspect-[4/3] lg:aspect-auto flex-1 min-h-0 bg-charcoal relative;
+}
+.car-modal__image-primary img {
+  @apply w-full h-full object-cover;
+}
+.car-modal__image-secondary {
+  @apply w-full aspect-[4/3] lg:aspect-auto flex-1 min-h-0 bg-charcoal relative border-t border-gold/10;
+}
+.car-modal__image-secondary img {
+  @apply w-full h-full object-cover;
+}
+.car-modal__details {
+  @apply p-6 sm:p-8 lg:p-12 flex flex-col justify-center lg:overflow-y-auto h-full;
+}
+.car-modal__divider {
+  @apply w-12 h-px bg-gold mb-6 sm:mb-8;
+}
+.car-modal__title {
+  @apply font-display text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2;
+}
+.car-modal__year {
+  @apply font-mono-ui text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-gold mb-6 sm:mb-8;
+}
+.car-modal__specs {
+  @apply grid grid-cols-2 gap-4 sm:gap-8 mb-8 sm:mb-12 border-y border-gold/10 py-6 sm:py-8;
+}
+.car-modal__spec {
+  @apply flex flex-col gap-1 sm:gap-2;
+}
+.car-modal__spec-label {
+  @apply font-mono-ui text-[8px] sm:text-[9px] tracking-[0.2em] uppercase text-muted-foreground;
+}
+.car-modal__spec-value {
+  @apply font-playfair text-xl sm:text-2xl italic text-foreground;
+}
+.car-modal__description {
+  @apply font-mono-ui text-xs sm:text-sm text-silver leading-relaxed mb-8 sm:mb-12;
+}
+.car-modal__cta {
+  @apply w-full border border-gold text-gold font-mono-ui text-[10px] sm:text-xs tracking-[0.3em] uppercase px-4 py-3 sm:px-8 sm:py-4 hover:bg-gold hover:text-background transition-all duration-300 text-center;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-slide-up {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* BEM Components: Brand Philosophy */
+.brand-philosophy {
+  @apply relative bg-background carbon-texture py-20 sm:py-32 overflow-hidden;
+}
+.brand-philosophy__content {
+  @apply relative z-10 max-w-7xl mx-auto px-6 lg:px-16;
+}
+.brand-philosophy__grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center;
+}
+.brand-philosophy__image-wrapper {
+  @apply relative w-full max-w-[500px] mx-auto lg:max-w-none;
+}
+.brand-philosophy__image-container {
+  @apply aspect-[4/5] relative bg-surface/5; /* faint background behind the image parts */
+}
+.brand-philosophy__tile {
+  @apply absolute inset-0 overflow-hidden cursor-crosshair;
+  /* Hardware acceleration for smooth individual tile scaling */
+  transform: translateZ(0);
+}
+.brand-philosophy__tile--1 { clip-path: polygon(0 8%, 32% 8%, 32% 38%, 0 38%); }
+.brand-philosophy__tile--2 { clip-path: polygon(36% 0, 100% 0, 100% 48%, 36% 48%); }
+.brand-philosophy__tile--3 { clip-path: polygon(4% 42%, 44% 42%, 44% 100%, 4% 100%); }
+.brand-philosophy__tile--4 { clip-path: polygon(48% 52%, 100% 52%, 100% 90%, 48% 90%); }
+
+.brand-philosophy__image {
+  @apply w-full h-full object-cover transition-transform ease-out;
+  transition-duration: 1.5s;
+}
+.brand-philosophy__tile:hover .brand-philosophy__image {
+  transform: scale(1.15);
+}
+.brand-philosophy__image-decoration {
+  @apply absolute inset-0 pointer-events-none;
+}
+/* We create thin gold lines that trace the exact gaps of the mosaic using pseudo elements */
+.brand-philosophy__image-decoration::before,
+.brand-philosophy__image-decoration::after {
+  content: '';
+  @apply absolute bg-gold/30 transition-transform duration-1000 ease-out;
+}
+/* Horizontal gap line */
+.brand-philosophy__image-decoration::before {
+  top: 40%; left: 0; right: 0; height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+/* Vertical gap line */
+.brand-philosophy__image-decoration::after {
+  top: 0; bottom: 0; left: 40%; width: 1px;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.brand-philosophy__image-wrapper:hover .brand-philosophy__image-decoration::before {
+  transform: scaleX(1);
+}
+.brand-philosophy__image-wrapper:hover .brand-philosophy__image-decoration::after {
+  transform: scaleY(1);
+}
+.brand-philosophy__text-wrapper {
+  @apply lg:pt-16 text-center lg:text-left;
+}
+.brand-philosophy__divider {
+  @apply w-12 h-px bg-gold mb-6 sm:mb-8 mx-auto lg:mx-0;
+}
+.brand-philosophy__title {
+  @apply font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-foreground leading-[1.1] mb-6 sm:mb-8;
+}
+.brand-philosophy__title-highlight {
+  @apply italic text-gold;
+}
+.brand-philosophy__description {
+  @apply font-mono-ui text-xs sm:text-sm text-muted-foreground leading-relaxed mb-8 sm:mb-12 max-w-md mx-auto lg:mx-0;
+}
+.brand-philosophy__stats {
+  @apply grid grid-cols-3 gap-4 sm:gap-8 border-t border-gold/10 pt-8;
+}
+.brand-philosophy__stat-number {
+  @apply font-playfair text-2xl sm:text-3xl italic text-gold;
+}
+.brand-philosophy__stat-label {
+  @apply font-mono-ui text-[8px] sm:text-[9px] tracking-[0.2em] uppercase text-muted-foreground mt-1;
+}
